@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+    environment {
+        name = "Aaryan"
+    }
+    parameters {
+        string(name: 'Person', defaultValue: 'Amitabh', description: "Who am I?")
+        booleanParam(name: 'Present', defaultValue: true, description: "Are you present?")
+        choice(name: "city", choices: ['Amritsar', 'Delhi', 'Gurugram'], description: "Choose your city")
+    }
+
+    stages {
+        stage('build') {
+            steps {
+                sh '''
+                pwd
+                '''
+            }
+        }
+        
+        stage('Env Variables') {
+            environment {
+                user = "Aaryan User"
+            }
+            steps {
+                sh "echo ${name}"
+                sh "echo ${user}"
+            }
+        }
+        
+        stage('Parameters') {
+            steps {
+                sh 'echo ${Person}'
+                sh 'echo ${Present}'
+                sh 'echo ${city}'
+            }
+        }
+
+        // stage('Continue?') {
+        //     input{
+        //         message "Should we continue?"
+        //         ok "Yes we can"
+        //     }
+        //     steps {
+        //         echo "Deploy on PROD"
+                
+        //     }
+        // }
+        stage('Deploy on PROD'){
+            steps{
+                echoo "Deployment done..."
+            }
+        }
+        
+    }
+    post{
+        always{
+                echo "Its always executed..."
+        }
+    }
+}
